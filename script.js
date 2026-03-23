@@ -188,7 +188,7 @@ let totalWrong = 0;
 // SECTION TAB SWITCHING
 // ============================================================
 function showSection(n) {
-  [1,2,3,4].forEach(i => {
+  [1, 2, 3, 4].forEach(i => {
     document.getElementById(`section-${i}`).style.display = i === n ? 'block' : 'none';
   });
   document.querySelectorAll('.tab-btn').forEach(b => {
@@ -355,7 +355,7 @@ function checkS1Answer() {
       `).join('')}
     </div>
     <div style="margin-top:10px;font-size:0.82rem;color:var(--muted);">
-      Score for this question: <strong style="color:${score===total?'#34a853':'#ea4335'}">${score}/${total} fields correct</strong>
+      Score for this question: <strong style="color:${score === total ? '#34a853' : '#ea4335'}">${score}/${total} fields correct</strong>
     </div>
   `;
   const reveal = document.getElementById('s1-reveal');
@@ -426,7 +426,7 @@ function updateScoreDisplay() {
   document.getElementById('sc-total').textContent = total;
   document.getElementById('sc-correct').textContent = totalCorrect;
   document.getElementById('sc-wrong').textContent = totalWrong;
-  document.getElementById('sc-pct').textContent = total > 0 ? Math.round(totalCorrect/total*100) + '%' : '—';
+  document.getElementById('sc-pct').textContent = total > 0 ? Math.round(totalCorrect / total * 100) + '%' : '—';
 }
 
 // ============================================================
@@ -737,7 +737,7 @@ function checkS2Answer() {
       `).join('')}
     </div>
     <div style="margin-top:10px;font-size:0.82rem;color:var(--muted);">
-      Score for this question: <strong style="color:${score===total?'#34a853':'#ea4335'}">${score}/${total} fields correct</strong>
+      Score for this question: <strong style="color:${score === total ? '#34a853' : '#ea4335'}">${score}/${total} fields correct</strong>
     </div>
   `;
   const reveal = document.getElementById('s2-reveal');
@@ -766,6 +766,487 @@ function showS2Result() {
   document.getElementById('s2-progress').style.width = '100%';
   updateScoreDisplay();
 }
+
+// ============================================================
+// SECTION 3 DATA — Company + Date + Description clues
+// User enters: Application Number, Title, Status
+// ============================================================
+const section3 = [
+  {
+    qnum: 1, website: 'google', websiteLabel: 'Google Patents', icon: '🔍',
+    clues: [
+      { icon: '🏢', key: 'Company', val: 'Intel Corp' },
+      { icon: '📅', key: 'Filing Date', val: '2023-07-25' },
+      { icon: '📝', key: 'Title Description', val: 'Graphics processor with processing cluster array for multiple neural networks using streaming multiprocessors' }
+    ],
+    hint: 'Search: "graphics neural network processor" → Filter Assignee: Intel Corp → Filing Date: 2023-07-25 in Google Patents',
+    answers: { appnumber: 'US18/358,067', title: 'GRAPHICS NEURAL NETWORK PROCESSOR, METHOD, AND SYSTEM', status: 'Granted' },
+    reveal: [
+      { key: 'Title', val: 'Graphics neural network processor, method, and system', highlight: false },
+      { key: 'Application Number', val: 'US18/358,067', highlight: true },
+      { key: 'Publication Number', val: 'US11900665B2', highlight: false },
+      { key: 'Filing Date', val: '2023-07-25', highlight: false },
+      { key: 'Grant Date', val: '2024-02-13', highlight: false },
+      { key: 'Status', val: 'GRANTED (B2 exists)', highlight: true },
+      { key: 'Expiration', val: '2037-04-24', highlight: false }
+    ]
+  },
+  {
+    qnum: 2, website: 'google', websiteLabel: 'Google Patents', icon: '🔍',
+    clues: [
+      { icon: '🏢', key: 'Company', val: 'Cisco Systems Inc' },
+      { icon: '📅', key: 'Filing Date', val: '1998-06-12' },
+      { icon: '📝', key: 'Title Description', val: 'Combining high and low data rate traffic on common transmission medium using bandwidth reservation scheme' }
+    ],
+    hint: 'Search: "MAC protocol multiple data rates" → Filter Assignee: Cisco Systems → Filing Date: 1998-06-12 in Google Patents',
+    answers: { appnumber: 'US09/097,305', title: 'MAC PROTOCOL EMPLOYING MULTIPLE DATA RATES', status: 'Granted' },
+    reveal: [
+      { key: 'Title', val: 'MAC protocol employing multiple data rates', highlight: false },
+      { key: 'Application Number', val: 'US09/097,305', highlight: true },
+      { key: 'Publication Number', val: 'US6463096B1', highlight: false },
+      { key: 'Filing Date', val: '1998-06-12', highlight: false },
+      { key: 'Grant Date', val: '2002-10-08', highlight: false },
+      { key: 'Status', val: 'GRANTED (B1 exists)', highlight: true },
+      { key: 'Expiration', val: '2018-06-12 (Expired)', highlight: false }
+    ]
+  },
+  {
+    qnum: 3, website: 'espacenet', websiteLabel: 'Espacenet', icon: '🇪🇺',
+    clues: [
+      { icon: '🏢', key: 'Company (Applicant)', val: 'Google Inc.' },
+      { icon: '📅', key: 'Application Date', val: '07.02.2013' },
+      { icon: '📝', key: 'Title Description', val: 'Wearable device assembly with head retention structure and modular connecting member for head mountable display' }
+    ],
+    hint: 'Espacenet → Advanced Search → Title: "head mountable display" → Applicant: Google Inc → Publication Date: 20140807:20140808',
+    answers: { appnumber: '13762146', title: 'MODULAR FRAME CONSTRUCTION FOR HEAD MOUNTABLE DISPLAY', status: 'Published' },
+    reveal: [
+      { key: 'Title', val: 'Modular frame construction for head mountable display', highlight: false },
+      { key: 'Application Number', val: '13762146', highlight: true },
+      { key: 'Publication Number', val: '20140218269', highlight: false },
+      { key: 'Application Date', val: '07.02.2013', highlight: false },
+      { key: 'Publication Date', val: '07.08.2014', highlight: false },
+      { key: 'Status', val: 'PUBLISHED (Kind A1 — No B number)', highlight: true },
+      { key: 'Inventor', val: 'Cazalet Peter Michael, Hebenstreit Joseph John', highlight: false }
+    ]
+  },
+  {
+    qnum: 4, website: 'espacenet', websiteLabel: 'Espacenet', icon: '🇪🇺',
+    clues: [
+      { icon: '🏢', key: 'Company (Applicant)', val: 'Amazon Technologies, Inc.' },
+      { icon: '📅', key: 'Application Date', val: '13.12.2018' },
+      { icon: '📝', key: 'Title Description', val: 'Device detects disconnect from network and enters automatic setup mode using trigger conditions' }
+    ],
+    hint: 'Espacenet → Advanced Search → Title: "automatic setup mode disconnect network" → Applicant: Amazon Technologies → Publication Date: 20200317:20200317',
+    answers: { appnumber: '16219743', title: 'AUTOMATIC SETUP MODE AFTER DISCONNECT FROM A NETWORK', status: 'Granted' },
+    reveal: [
+      { key: 'Title', val: 'Automatic setup mode after disconnect from a network', highlight: false },
+      { key: 'Application Number', val: '16219743', highlight: true },
+      { key: 'Publication Number', val: '10593174', highlight: false },
+      { key: 'Application Date', val: '13.12.2018', highlight: false },
+      { key: 'Grant Date', val: '17.03.2020', highlight: false },
+      { key: 'Status', val: 'GRANTED (Publication Kind B1)', highlight: true },
+      { key: 'Inventor', val: 'Joshua Hongpyo Yoon', highlight: false }
+    ]
+  },
+  {
+    qnum: 5, website: 'espacenet', websiteLabel: 'Espacenet', icon: '🇪🇺',
+    clues: [
+      { icon: '🏢', key: 'Company (Applicant)', val: 'ZOHO Corporation Private Ltd [IN]' },
+      { icon: '📅', key: 'Application Date', val: '2023-08-08' },
+      { icon: '📝', key: 'Title Description', val: 'System automatically creates, maintains, valuates and re-valuates exhibition booth in a venue' }
+    ],
+    hint: 'Espacenet → Advanced Search → Title: "automated valuation exhibition booth" → Applicant: ZOHO Corporation → Publication Date: 20240215:20240215',
+    answers: { appnumber: 'US202318446449A', title: 'AUTOMATED VALUATION OF AN EXHIBITION BOOTH', status: 'Published' },
+    reveal: [
+      { key: 'Title', val: 'Automated valuation of an exhibition booth', highlight: false },
+      { key: 'Application Number', val: 'US202318446449A', highlight: true },
+      { key: 'Publication Number', val: 'US2024054514A1', highlight: false },
+      { key: 'Application Date', val: '2023-08-08', highlight: false },
+      { key: 'Publication Date', val: '2024-02-15', highlight: false },
+      { key: 'Status', val: 'PUBLISHED (A1 only, No B number)', highlight: true },
+      { key: 'Applicant', val: 'Zoho Corporation Private Ltd [IN]', highlight: false }
+    ]
+  },
+  {
+    qnum: 6, website: 'espacenet', websiteLabel: 'Espacenet', icon: '🇪🇺',
+    clues: [
+      { icon: '🏢', key: 'Company (Applicant)', val: 'DISNEY ENTPR INC [US]' },
+      { icon: '📅', key: 'Application Date', val: '2017-01-10' },
+      { icon: '📝', key: 'Title Description', val: 'Simulation adapter attached to real-world physical object communicates characteristics to simulation device' }
+    ],
+    hint: 'Espacenet → Advanced Search → Title: "simulation experience physical objects" → Applicant: DISNEY ENTPR INC → Publication Date: 20200421:20200421',
+    answers: { appnumber: 'US201715403075A', title: 'SIMULATION EXPERIENCE WITH PHYSICAL OBJECTS', status: 'Granted' },
+    reveal: [
+      { key: 'Title', val: 'Simulation experience with physical objects', highlight: false },
+      { key: 'Application Number', val: 'US201715403075A', highlight: true },
+      { key: 'Publication Number', val: 'US10627909B2', highlight: false },
+      { key: 'Application Date', val: '2017-01-10', highlight: false },
+      { key: 'Publication Date', val: '2020-04-21', highlight: false },
+      { key: 'Status', val: 'GRANTED (B2 in Published as)', highlight: true },
+      { key: 'Inventors', val: 'Arana Mark, Havey Benjamin F, Drake Edward, Chen Alexander C', highlight: false }
+    ]
+  }
+];
+
+// ============================================================
+// SECTION 4 DATA — Publication number clue only
+// User enters: App Number, App Date, Pub Date, Title, Status
+// ============================================================
+const section4 = [
+  {
+    qnum: 1, website: 'google', websiteLabel: 'Google Patents', icon: '🔍',
+    appNumber: 'US15/763,391',
+    hint: 'Enter US15/763,391 in Google Patents search bar → Find the exact patent',
+    answers: { appdate: '2016-09-12', pubdate: '2021-02-16', title: 'METHOD FOR OPERATING A STEERING SYSTEM OF A MOTOR VEHICLE', status: 'Granted' },
+    reveal: [
+      { key: 'Application Number', val: 'US15/763,391', highlight: false },
+      { key: 'Application Date', val: '2016-09-12', highlight: true },
+      { key: 'Publication Date', val: '2021-02-16', highlight: true },
+      { key: 'Title', val: 'Method for operating a steering system of a motor vehicle', highlight: true },
+      { key: 'Status', val: 'GRANTED (B2)', highlight: true },
+      { key: 'Assignee', val: 'Robert Bosch GmbH, Robert Bosch Automotive Steering GmbH', highlight: false },
+      { key: 'Expiration', val: '2037-03-05', highlight: false }
+    ]
+  },
+  {
+    qnum: 2, website: 'google', websiteLabel: 'Google Patents', icon: '🔍',
+    appNumber: 'US16/057,892',
+    hint: 'Enter US16/057,892 in Google Patents search bar → Find the exact patent',
+    answers: { appdate: '2018-08-08', pubdate: '2022-11-15', title: 'AIR DELIVERY SYSTEM FOR A GAS TURBINE ENGINE', status: 'Granted' },
+    reveal: [
+      { key: 'Application Number', val: 'US16/057,892', highlight: false },
+      { key: 'Application Date', val: '2018-08-08', highlight: true },
+      { key: 'Publication Date', val: '2022-11-15', highlight: true },
+      { key: 'Title', val: 'Air delivery system for a gas turbine engine', highlight: true },
+      { key: 'Status', val: 'GRANTED (B2)', highlight: true },
+      { key: 'Assignee', val: 'General Electric Co Polska Sp zoo, General Electric Co', highlight: false },
+      { key: 'Expiration', val: '2039-09-26', highlight: false }
+    ]
+  },
+  {
+    qnum: 3, website: 'espacenet', websiteLabel: 'Espacenet', icon: '🇪🇺',
+    appNumber: '14273399',
+    hint: 'Go to Espacenet → Advanced Search → Application Number: 14273399 → Open patent',
+    answers: { appdate: '08.05.2014', pubdate: '20.11.2014', title: 'PROVIDING VISUAL EFFECTS FOR IMAGES', status: 'Granted' },
+    reveal: [
+      { key: 'Application Number', val: '14273399', highlight: false },
+      { key: 'Application Date', val: '08.05.2014', highlight: true },
+      { key: 'Publication Date', val: '20.11.2014', highlight: true },
+      { key: 'Title', val: 'Providing visual effects for images', highlight: true },
+      { key: 'Grant Date', val: '30.01.2018', highlight: false },
+      { key: 'Status', val: 'GRANTED (Publication Kind B2)', highlight: true },
+      { key: 'Applicant', val: 'Google Inc., Google LLC', highlight: false }
+    ]
+  },
+  {
+    qnum: 4, website: 'espacenet', websiteLabel: 'Espacenet', icon: '🇪🇺',
+    appNumber: '15691238',
+    hint: 'Go to Espacenet → Advanced Search → Application Number: 15691238 → Open patent',
+    answers: { appdate: '30.08.2017', pubdate: '30.07.2019', title: 'INTELLIGENT ELECTRICAL SYSTEM FOR VEHICLE', status: 'Granted' },
+    reveal: [
+      { key: 'Application Number', val: '15691238', highlight: false },
+      { key: 'Application Date', val: '30.08.2017', highlight: true },
+      { key: 'Publication Date', val: '30.07.2019', highlight: true },
+      { key: 'Title', val: 'Intelligent electrical system for vehicle', highlight: true },
+      { key: 'Grant Date', val: '30.07.2019', highlight: false },
+      { key: 'Status', val: 'GRANTED (Publication Kind B1)', highlight: true },
+      { key: 'Applicant', val: 'Amazon Technologies, Amazon Technologies Inc.', highlight: false }
+    ]
+  },
+  {
+    qnum: 5, website: 'espacenet', websiteLabel: 'Espacenet', icon: '🇪🇺',
+    appNumber: 'US202418406003A',
+    hint: 'Go to Espacenet → Advanced Search → Application Number: US202418406003A → Open patent',
+    answers: { appdate: '2024-01-05', pubdate: '2024-07-18', title: 'EXTENSIBLE BUILT-IN OBJECT MANAGEMENT', status: 'Published' },
+    reveal: [
+      { key: 'Application Number', val: 'US202418406003A', highlight: false },
+      { key: 'Application Date', val: '2024-01-05', highlight: true },
+      { key: 'Publication Date', val: '2024-07-18', highlight: true },
+      { key: 'Title', val: 'Extensible built-in object management', highlight: true },
+      { key: 'Status', val: 'PUBLISHED (A1 only)', highlight: true },
+      { key: 'Applicant', val: 'Zoho Corporation Private Ltd [IN]', highlight: false }
+    ]
+  },
+  {
+    qnum: 6, website: 'espacenet', websiteLabel: 'Espacenet', icon: '🇪🇺',
+    appNumber: 'US201313848694A',
+    hint: 'Go to Espacenet → Advanced Search → Application Number: US201313848694A → Open patent',
+    answers: { appdate: '2013-03-21', pubdate: '2020-07-07', title: 'DYNAMIC MODIFICATION OF NAVIGATION MAPS', status: 'Granted' },
+    reveal: [
+      { key: 'Application Number', val: 'US201313848694A', highlight: false },
+      { key: 'Application Date', val: '2013-03-21', highlight: true },
+      { key: 'Publication Date', val: '2020-07-07', highlight: true },
+      { key: 'Title', val: 'Dynamic modification of navigation maps', highlight: true },
+      { key: 'Status', val: 'GRANTED (B2)', highlight: true },
+      { key: 'Applicant', val: 'DISNEY ENTPR INC [US]', highlight: false }
+    ]
+  }
+];
+
+// ============================================================
+// SECTION 3 STATE & LOGIC
+// ============================================================
+let s3Index = 0, s3Correct = 0, s3Wrong = 0, s3Streak = 0, s3Checked = false;
+
+function renderS3Question() {
+  document.getElementById('s3-result').classList.remove('show');
+  if (s3Index >= section3.length) { showS3Result(); return; }
+  s3Checked = false;
+  const q = section3[s3Index];
+  document.getElementById('s3-progress').style.width = ((s3Index / section3.length) * 100) + '%';
+  document.getElementById('s3-qnum').textContent = `Question ${s3Index + 1} of ${section3.length}`;
+  document.getElementById('s3-streak').textContent = `🔥 Streak: ${s3Streak}`;
+
+  const cluesHTML = q.clues.map(c => `
+    <div class="clue-item">
+      <span class="clue-icon">${c.icon}</span>
+      <div class="clue-content">
+        <div class="clue-key">${c.key}</div>
+        <div class="clue-val">${c.val}</div>
+      </div>
+    </div>`).join('');
+
+  document.getElementById('s3-question-area').innerHTML = `
+    <div class="question-card">
+      <div class="q-header">
+        <div class="q-icon ${q.website}">${q.icon}</div>
+        <div class="q-meta-info">
+          <div class="website-badge badge-${q.website}">${q.websiteLabel}</div>
+          <div class="q-num">Question ${q.qnum} / 6 — Find this patent using the clues below</div>
+        </div>
+      </div>
+      <div class="clues-section">
+        <div class="clues-label">🔎 Search Clues</div>
+        <div class="clues-grid">${cluesHTML}</div>
+        <div class="hint-box">💡 <span><strong>Hint:</strong> ${q.hint}</span></div>
+      </div>
+      <div class="answer-section">
+        <div class="answer-label">✏️ Your Answer — Fill in 3 fields</div>
+        <div class="answer-grid">
+          <div class="answer-field">
+            <label>Application Number <span class="req">*</span></label>
+            <input type="text" id="s3-f-appnum" placeholder="e.g. US18/358,067" autocomplete="off" />
+            <div class="field-feedback" id="s3-fb-appnum"></div>
+          </div>
+          <div class="answer-field">
+            <label>Title <span class="req">*</span></label>
+            <input type="text" id="s3-f-title" placeholder="Full title in CAPS" autocomplete="off" />
+            <div class="field-feedback" id="s3-fb-title"></div>
+          </div>
+          <div class="answer-field">
+            <label>Application Status <span class="req">*</span></label>
+            <select id="s3-f-status">
+              <option value="">-- Select Status --</option>
+              <option value="Filed">Filed</option>
+              <option value="Published">Published</option>
+              <option value="Granted">Granted</option>
+            </select>
+            <div class="field-feedback" id="s3-fb-status"></div>
+          </div>
+        </div>
+        <div class="action-row">
+          <button class="btn btn-check" onclick="checkS3Answer()">✅ Check Answer</button>
+          <button class="btn btn-next" id="s3-nextbtn" onclick="nextS3()" style="display:none">Next Question →</button>
+          <button class="btn btn-skip" onclick="nextS3()">Skip ⏭</button>
+        </div>
+        <div class="answer-reveal" id="s3-reveal"></div>
+      </div>
+    </div>`;
+}
+
+function checkS3Answer() {
+  if (s3Checked) return;
+  s3Checked = true;
+  const q = section3[s3Index];
+  const ans = q.answers;
+  let score = 0;
+  function cf(iid, fid, uv, cv) {
+    const el = document.getElementById(iid), fb = document.getElementById(fid);
+    const ok = normalize(uv) === normalize(cv);
+    el.classList.add(ok ? 'is-correct' : 'is-wrong');
+    fb.className = `field-feedback show ${ok ? 'correct' : 'wrong'}`;
+    fb.innerHTML = ok ? `✅ Correct!` : `❌ Answer: ${cv}`;
+    if (ok) score++;
+  }
+  cf('s3-f-appnum', 's3-fb-appnum', document.getElementById('s3-f-appnum').value, ans.appnumber);
+  cf('s3-f-title', 's3-fb-title', document.getElementById('s3-f-title').value, ans.title);
+  cf('s3-f-status', 's3-fb-status', document.getElementById('s3-f-status').value, ans.status);
+
+  if (score === 3) { s3Correct++; s3Streak++; totalCorrect++; }
+  else { s3Wrong++; s3Streak = 0; totalWrong++; }
+  document.getElementById('s3-streak').textContent = `🔥 Streak: ${s3Streak}`;
+
+  const reveal = document.getElementById('s3-reveal');
+  reveal.innerHTML = `
+    <div class="reveal-title">✅ Answer Key</div>
+    <div class="reveal-grid">${q.reveal.map(r => `<div class="reveal-item ${r.highlight ? 'highlight' : ''}"><div class="r-key">${r.key}</div><div class="r-val">${r.val}</div></div>`).join('')}</div>
+    <div style="margin-top:10px;font-size:0.82rem;color:var(--muted);">Score: <strong style="color:${score === 3 ? '#34a853' : '#ea4335'}">${score}/3 fields correct</strong></div>`;
+  reveal.classList.add('show');
+  document.getElementById('s3-nextbtn').style.display = 'flex';
+  updateScoreDisplay();
+}
+
+function nextS3() { s3Index++; renderS3Question(); }
+
+function showS3Result() {
+  document.getElementById('s3-question-area').style.display = 'none';
+  document.getElementById('s3-result').classList.add('show');
+  const pct = Math.round((s3Correct / section3.length) * 100);
+  document.getElementById('s3-rscore').textContent = `${s3Correct}/${section3.length}`;
+  const t = pct === 100 ? ['🏆', 'Perfect!', 'All 6 description-clue patents found correctly!'] : pct >= 80 ? ['🎯', 'Great Job!', 'Almost perfect!'] : pct >= 60 ? ['💪', 'Good Progress!', 'Keep going!'] : ['📚', 'Keep Practicing!', 'Review the hints and try again!'];
+  document.getElementById('s3-trophy').textContent = t[0];
+  document.getElementById('s3-rtitle').textContent = t[1];
+  document.getElementById('s3-rmsg').textContent = t[2];
+  document.getElementById('s3-progress').style.width = '100%';
+  updateScoreDisplay();
+}
+
+// ============================================================
+// SECTION 4 STATE & LOGIC
+// ============================================================
+let s4Index = 0, s4Correct = 0, s4Wrong = 0, s4Streak = 0, s4Checked = false;
+
+function renderS4Question() {
+  document.getElementById('s4-result').classList.remove('show');
+  if (s4Index >= section4.length) { showS4Result(); return; }
+  s4Checked = false;
+  const q = section4[s4Index];
+  document.getElementById('s4-progress').style.width = ((s4Index / section4.length) * 100) + '%';
+  document.getElementById('s4-qnum').textContent = `Question ${s4Index + 1} of ${section4.length}`;
+  document.getElementById('s4-streak').textContent = `🔥 Streak: ${s4Streak}`;
+
+  document.getElementById('s4-question-area').innerHTML = `
+    <div class="question-card">
+      <div class="q-header">
+        <div class="q-icon ${q.website}">${q.icon}</div>
+        <div class="q-meta-info">
+          <div class="website-badge badge-${q.website}">${q.websiteLabel}</div>
+          <div class="q-num">Question ${q.qnum} / 6 — Use the application number to find the patent</div>
+        </div>
+      </div>
+      <div class="clues-section">
+        <div class="clues-label">🔎 Application Number (Your Only Clue)</div>
+        <div class="clues-grid">
+          <div class="clue-item">
+            <span class="clue-icon">📋</span>
+            <div class="clue-content">
+              <div class="clue-key">Application Number</div>
+              <div class="clue-val" style="font-size:1.1rem;font-weight:700;color:#f9a825">${q.appNumber}</div>
+            </div>
+          </div>
+        </div>
+        <div class="hint-box">💡 <span><strong>Hint:</strong> ${q.hint}</span></div>
+      </div>
+      <div class="answer-section">
+        <div class="answer-label">✏️ Your Answer — Fill in 4 fields</div>
+        <div class="answer-grid">
+          <div class="answer-field">
+            <label>Application Date <span class="req">*</span></label>
+            <input type="text" id="s4-f-appdate" placeholder="e.g. 2016-09-12" autocomplete="off" />
+            <div class="field-feedback" id="s4-fb-appdate"></div>
+          </div>
+          <div class="answer-field">
+            <label>Publication Date <span class="req">*</span></label>
+            <input type="text" id="s4-f-pubdate" placeholder="e.g. 2021-02-16" autocomplete="off" />
+            <div class="field-feedback" id="s4-fb-pubdate"></div>
+          </div>
+          <div class="answer-field">
+            <label>Title <span class="req">*</span></label>
+            <input type="text" id="s4-f-title" placeholder="Full title in CAPS" autocomplete="off" />
+            <div class="field-feedback" id="s4-fb-title"></div>
+          </div>
+          <div class="answer-field">
+            <label>Application Status <span class="req">*</span></label>
+            <select id="s4-f-status">
+              <option value="">-- Select Status --</option>
+              <option value="Filed">Filed</option>
+              <option value="Published">Published</option>
+              <option value="Granted">Granted</option>
+            </select>
+            <div class="field-feedback" id="s4-fb-status"></div>
+          </div>
+        </div>
+        <div class="action-row">
+          <button class="btn btn-check" onclick="checkS4Answer()">✅ Check Answer</button>
+          <button class="btn btn-next" id="s4-nextbtn" onclick="nextS4()" style="display:none">Next Question →</button>
+          <button class="btn btn-skip" onclick="nextS4()">Skip ⏭</button>
+        </div>
+        <div class="answer-reveal" id="s4-reveal"></div>
+      </div>
+    </div>`;
+}
+
+function checkS4Answer() {
+  if (s4Checked) return;
+  s4Checked = true;
+  const q = section4[s4Index];
+  const ans = q.answers;
+  let score = 0;
+  function cf(iid, fid, uv, cv) {
+    const el = document.getElementById(iid), fb = document.getElementById(fid);
+    const ok = normalize(uv) === normalize(cv);
+    el.classList.add(ok ? 'is-correct' : 'is-wrong');
+    fb.className = `field-feedback show ${ok ? 'correct' : 'wrong'}`;
+    fb.innerHTML = ok ? `✅ Correct!` : `❌ Answer: ${cv}`;
+    if (ok) score++;
+  }
+  cf('s4-f-appdate', 's4-fb-appdate', document.getElementById('s4-f-appdate').value, ans.appdate);
+  cf('s4-f-pubdate', 's4-fb-pubdate', document.getElementById('s4-f-pubdate').value, ans.pubdate);
+  cf('s4-f-title', 's4-fb-title', document.getElementById('s4-f-title').value, ans.title);
+  cf('s4-f-status', 's4-fb-status', document.getElementById('s4-f-status').value, ans.status);
+
+  if (score === 4) { s4Correct++; s4Streak++; totalCorrect++; }
+  else { s4Wrong++; s4Streak = 0; totalWrong++; }
+  document.getElementById('s4-streak').textContent = `🔥 Streak: ${s4Streak}`;
+
+  const reveal = document.getElementById('s4-reveal');
+  reveal.innerHTML = `
+    <div class="reveal-title">✅ Answer Key</div>
+    <div class="reveal-grid">${q.reveal.map(r => `<div class="reveal-item ${r.highlight ? 'highlight' : ''}"><div class="r-key">${r.key}</div><div class="r-val">${r.val}</div></div>`).join('')}</div>
+    <div style="margin-top:10px;font-size:0.82rem;color:var(--muted);">Score: <strong style="color:${score === 4 ? '#34a853' : '#ea4335'}">${score}/4 fields correct</strong></div>`;
+  reveal.classList.add('show');
+  document.getElementById('s4-nextbtn').style.display = 'flex';
+  updateScoreDisplay();
+}
+
+function nextS4() { s4Index++; renderS4Question(); }
+
+function showS4Result() {
+  document.getElementById('s4-question-area').style.display = 'none';
+  document.getElementById('s4-result').classList.add('show');
+  const pct = Math.round((s4Correct / section4.length) * 100);
+  document.getElementById('s4-rscore').textContent = `${s4Correct}/${section4.length}`;
+  const t = pct === 100 ? ['🏆', 'Perfect! All 4 Sections Done!', 'You are 100% exam ready!'] : pct >= 80 ? ['🎯', 'Excellent!', 'Almost perfect on the hardest section!'] : pct >= 60 ? ['💪', 'Good Progress!', 'Practice more with publication numbers!'] : ['📚', 'Keep Practicing!', 'Focus on finding dates from publication numbers!'];
+  document.getElementById('s4-trophy').textContent = t[0];
+  document.getElementById('s4-rtitle').textContent = t[1];
+  document.getElementById('s4-rmsg').textContent = t[2];
+  document.getElementById('s4-progress').style.width = '100%';
+  updateScoreDisplay();
+}
+
+// Update restartSection for sections 3 & 4
+const origRestart = restartSection;
+restartSection = function (n) {
+  if (n === 3) {
+    s3Index = 0; s3Correct = 0; s3Wrong = 0; s3Streak = 0;
+    document.getElementById('s3-result').classList.remove('show');
+    document.getElementById('s3-question-area').style.display = 'block';
+    renderS3Question();
+  } else if (n === 4) {
+    s4Index = 0; s4Correct = 0; s4Wrong = 0; s4Streak = 0;
+    document.getElementById('s4-result').classList.remove('show');
+    document.getElementById('s4-question-area').style.display = 'block';
+    renderS4Question();
+  } else { origRestart(n); }
+};
+
+// Patch showSection to init sections on first view
+const origShow = showSection;
+showSection = function (n) {
+  origShow(n);
+  if (n === 3 && s3Index === 0 && !s3Checked) renderS3Question();
+  if (n === 4 && s4Index === 0 && !s4Checked) renderS4Question();
+};
 
 // ============================================================
 // INIT

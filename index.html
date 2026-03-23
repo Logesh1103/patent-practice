@@ -1,143 +1,196 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Patent Search Exam Practice</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patent Search Exam Practice</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<!-- TOP HEADER -->
-<div class="top-header">
-  <h1>Patent Search <span>Exam Practice</span></h1>
-  <p>Created by LOGESH G || 1st Year Student || AI&DS Department </p>
-</div>
-
-<div class="dashboard">
-
-  <!-- SCORE GRID -->
-  <div class="score-grid">
-    <div class="score-card total">
-      <div class="num" id="sc-total">0</div>
-      <div class="lbl">Attempted</div>
-    </div>
-    <div class="score-card correct">
-      <div class="num" id="sc-correct">0</div>
-      <div class="lbl">Correct</div>
-    </div>
-    <div class="score-card wrong">
-      <div class="num" id="sc-wrong">0</div>
-      <div class="lbl">Wrong</div>
-    </div>
-    <div class="score-card percent">
-      <div class="num" id="sc-pct">—</div>
-      <div class="lbl">Score</div>
-    </div>
+  <!-- TOP HEADER -->
+  <div class="top-header">
+    <h1>Patent Search <span>Exam Practice</span></h1>
+    <p>Created by LOGESH G || 1st Year Student || AI&DS Department </p>
   </div>
 
-  <!-- SECTION TABS -->
-  <div class="section-tabs">
-    <button class="tab-btn active-tab" data-section="1" onclick="showSection(1)">
-      <span class="dot"></span> Section 1 — Real Patents
-    </button>
-    <button class="tab-btn" data-section="2" onclick="showSection(2)">
-      <span class="dot"></span> Section 2 — CPC Clues
-    </button>
-    <button class="tab-btn" data-section="3" onclick="showSection(3)">
-      <span class="dot"></span> Section 3
-    </button>
-    <button class="tab-btn" data-section="4" onclick="showSection(4)">
-      <span class="dot"></span> Section 4
-    </button>
-  </div>
+  <div class="dashboard">
 
-  <!-- SECTION 1 -->
-  <div id="section-1">
-    <div class="section-header">
-      <div class="section-num">1</div>
-      <div class="section-info">
-        <h3>Section 1 — Real Patent Search Practice</h3>
-        <p>Search each patent → Fill in the details → Check answer</p>
+    <!-- SCORE GRID -->
+    <div class="score-grid">
+      <div class="score-card total">
+        <div class="num" id="sc-total">0</div>
+        <div class="lbl">Attempted</div>
+      </div>
+      <div class="score-card correct">
+        <div class="num" id="sc-correct">0</div>
+        <div class="lbl">Correct</div>
+      </div>
+      <div class="score-card wrong">
+        <div class="num" id="sc-wrong">0</div>
+        <div class="lbl">Wrong</div>
+      </div>
+      <div class="score-card percent">
+        <div class="num" id="sc-pct">—</div>
+        <div class="lbl">Score</div>
       </div>
     </div>
 
-    <!-- Progress -->
-    <div class="progress-wrap">
-      <div class="progress-fill" id="s1-progress" style="width:0%"></div>
+    <!-- SECTION TABS -->
+    <div class="section-tabs">
+      <button class="tab-btn active-tab" data-section="1" onclick="showSection(1)">
+        <span class="dot"></span> Section 1 — Real Patents
+      </button>
+      <button class="tab-btn" data-section="2" onclick="showSection(2)">
+        <span class="dot"></span> Section 2 — CPC Clues
+      </button>
+      <button class="tab-btn" data-section="3" onclick="showSection(3)">
+        <span class="dot"></span> Section 3 — Description
+      </button>
+      <button class="tab-btn" data-section="4" onclick="showSection(4)">
+        <span class="dot"></span> Section 4 — APP Number
+      </button>
     </div>
 
-    <div class="q-counter">
-      <span id="s1-qnum">Question 1 of 6</span>
-      <span class="streak-badge" id="s1-streak">🔥 Streak: 0</span>
-    </div>
+    <!-- SECTION 1 -->
+    <div id="section-1">
+      <div class="section-header">
+        <div class="section-num">1</div>
+        <div class="section-info">
+          <h3>Section 1 — Real Patent Search Practice</h3>
+          <p>Search each patent → Fill in the details → Check answer</p>
+        </div>
+      </div>
 
-    <!-- QUESTION AREA -->
-    <div id="s1-question-area"></div>
+      <!-- Progress -->
+      <div class="progress-wrap">
+        <div class="progress-fill" id="s1-progress" style="width:0%"></div>
+      </div>
 
-    <!-- RESULT -->
-    <div class="result-screen" id="s1-result">
-      <span class="result-trophy" id="s1-trophy">🏆</span>
-      <div class="result-title" id="s1-rtitle">Section 1 Complete!</div>
-      <div class="result-score" id="s1-rscore">0/6</div>
-      <div class="result-msg" id="s1-rmsg"></div>
-      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-        <button class="btn btn-check" onclick="restartSection(1)">Restart Section 1 🔄</button>
-        <button class="btn btn-skip" onclick="showSection(2)">Go to Section 2 →</button>
+      <div class="q-counter">
+        <span id="s1-qnum">Question 1 of 6</span>
+        <span class="streak-badge" id="s1-streak">🔥 Streak: 0</span>
+      </div>
+
+      <!-- QUESTION AREA -->
+      <div id="s1-question-area"></div>
+
+      <!-- RESULT -->
+      <div class="result-screen" id="s1-result">
+        <span class="result-trophy" id="s1-trophy">🏆</span>
+        <div class="result-title" id="s1-rtitle">Section 1 Complete!</div>
+        <div class="result-score" id="s1-rscore">0/6</div>
+        <div class="result-msg" id="s1-rmsg"></div>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+          <button class="btn btn-check" onclick="restartSection(1)">Restart Section 1 🔄</button>
+          <button class="btn btn-skip" onclick="showSection(2)">Go to Section 2 →</button>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- SECTION 2 -->
-  <div id="section-2" style="display:none">
-    <div class="section-header">
-      <div class="section-num" style="background:linear-gradient(135deg,#ea4335,#c62828)">2</div>
-      <div class="section-info">
-        <h3>Section 2 — CPC Code Clues</h3>
-        <p>Use CPC code, country &amp; date clues → Find the patent → Fill in title, app number &amp; status</p>
+    <!-- SECTION 2 -->
+    <div id="section-2" style="display:none">
+      <div class="section-header">
+        <div class="section-num" style="background:linear-gradient(135deg,#ea4335,#c62828)">2</div>
+        <div class="section-info">
+          <h3>Section 2 — CPC Code Clues</h3>
+          <p>Use CPC code, country &amp; date clues → Find the patent → Fill in title, app number &amp; status</p>
+        </div>
+      </div>
+
+      <div class="progress-wrap">
+        <div class="progress-fill" id="s2-progress" style="width:0%;background:linear-gradient(90deg,#ea4335,#f9a825)">
+        </div>
+      </div>
+
+      <div class="q-counter">
+        <span id="s2-qnum">Question 1 of 6</span>
+        <span class="streak-badge" id="s2-streak">🔥 Streak: 0</span>
+      </div>
+
+      <div id="s2-question-area"></div>
+
+      <div class="result-screen" id="s2-result">
+        <span class="result-trophy" id="s2-trophy">🏆</span>
+        <div class="result-title" id="s2-rtitle">Section 2 Complete!</div>
+        <div class="result-score" id="s2-rscore">0/6</div>
+        <div class="result-msg" id="s2-rmsg"></div>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+          <button class="btn btn-check" onclick="restartSection(2)">Restart Section 2 🔄</button>
+          <button class="btn btn-skip" onclick="showSection(3)">Go to Section 3 →</button>
+        </div>
+      </div>
+    </div>
+    <!-- SECTION 3 -->
+    <div id="section-3" style="display:none">
+      <div class="section-header">
+        <div class="section-num" style="background:linear-gradient(135deg,#34a853,#1b5e20)">3</div>
+        <div class="section-info">
+          <h3>Section 3 — Company, Date &amp; Description Clues</h3>
+          <p>Use company name, date &amp; title description → Find patent → Enter Application Number, Title &amp; Status
+          </p>
+        </div>
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-fill" id="s3-progress" style="width:0%;background:linear-gradient(90deg,#34a853,#00bcd4)">
+        </div>
+      </div>
+      <div class="q-counter">
+        <span id="s3-qnum">Question 1 of 6</span>
+        <span class="streak-badge" id="s3-streak">🔥 Streak: 0</span>
+      </div>
+      <div id="s3-question-area"></div>
+      <div class="result-screen" id="s3-result">
+        <span class="result-trophy" id="s3-trophy">🏆</span>
+        <div class="result-title" id="s3-rtitle">Section 3 Complete!</div>
+        <div class="result-score" id="s3-rscore">0/6</div>
+        <div class="result-msg" id="s3-rmsg"></div>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+          <button class="btn btn-check" onclick="restartSection(3)">Restart Section 3 🔄</button>
+          <button class="btn btn-skip" onclick="showSection(4)">Go to Section 4 →</button>
+        </div>
       </div>
     </div>
 
-    <div class="progress-wrap">
-      <div class="progress-fill" id="s2-progress" style="width:0%;background:linear-gradient(90deg,#ea4335,#f9a825)"></div>
-    </div>
-
-    <div class="q-counter">
-      <span id="s2-qnum">Question 1 of 6</span>
-      <span class="streak-badge" id="s2-streak">🔥 Streak: 0</span>
-    </div>
-
-    <div id="s2-question-area"></div>
-
-    <div class="result-screen" id="s2-result">
-      <span class="result-trophy" id="s2-trophy">🏆</span>
-      <div class="result-title" id="s2-rtitle">Section 2 Complete!</div>
-      <div class="result-score" id="s2-rscore">0/6</div>
-      <div class="result-msg" id="s2-rmsg"></div>
-      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-        <button class="btn btn-check" onclick="restartSection(2)">Restart Section 2 🔄</button>
-        <button class="btn btn-skip" onclick="showSection(3)">Go to Section 3 →</button>
+    <!-- SECTION 4 -->
+    <div id="section-4" style="display:none">
+      <div class="section-header">
+        <div class="section-num" style="background:linear-gradient(135deg,#f9a825,#e65100)">4</div>
+        <div class="section-info">
+          <h3>Section 4 — Application Number Clue Only</h3>
+          <p>Use only the application number → Find patent → Enter App Date, Pub Date, Title &amp; Status</p>
+        </div>
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-fill" id="s4-progress" style="width:0%;background:linear-gradient(90deg,#f9a825,#ea4335)">
+        </div>
+      </div>
+      <div class="q-counter">
+        <span id="s4-qnum">Question 1 of 6</span>
+        <span class="streak-badge" id="s4-streak">🔥 Streak: 0</span>
+      </div>
+      <div id="s4-question-area"></div>
+      <div class="result-screen" id="s4-result">
+        <span class="result-trophy" id="s4-trophy">🏆</span>
+        <div class="result-title" id="s4-rtitle">Section 4 Complete!</div>
+        <div class="result-score" id="s4-rscore">0/6</div>
+        <div class="result-msg" id="s4-rmsg"></div>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+          <button class="btn btn-check" onclick="restartSection(4)">Restart Section 4 🔄</button>
+          <button class="btn btn-check" onclick="restartSection(1)"
+            style="background:linear-gradient(135deg,#34a853,#1b5e20)">Restart All 🔄</button>
+        </div>
       </div>
     </div>
-  </div>
-  <div id="section-3" style="display:none">
-    <div class="coming-soon">
-      <span class="cs-icon">🚧</span>
-      <h3>Section 3 — Coming Soon!</h3>
-      <p>Complete Section 1 first. Section 3 will be added next.</p>
-    </div>
-  </div>
-  <div id="section-4" style="display:none">
-    <div class="coming-soon">
-      <span class="cs-icon">🚧</span>
-      <h3>Section 4 — Coming Soon!</h3>
-      <p>Complete Section 1 first. Section 4 will be added next.</p>
-    </div>
-  </div>
 
-</div>
+  </div><!-- /dashboard -->
 
-<script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
+
 </html>
